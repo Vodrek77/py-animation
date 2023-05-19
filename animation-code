@@ -1,0 +1,195 @@
+import simplegui
+import math
+import random
+
+#x=300
+x=0
+y=0
+y2=0
+a=.1
+
+x2=0
+y3=0
+y4=0
+
+x3=0
+y5=0
+y6=0
+
+counter=0
+counter2=0
+counter3=0
+
+radius = 90
+radius2=60
+radius3=210
+
+h=300
+k=300
+
+pi=math.pi
+angle=0
+insideLine=0
+outsideLine=0
+
+starRandX=50
+
+starX=[]
+starY=[]
+
+polyX=0
+polyY=0
+
+#draw_handler makes a parabola 
+
+def draw_handler(canvas):
+    global x
+    global y
+    global a
+    global h
+    global k
+    x=x-1
+    y=a*((x-h)**2)+k
+
+    canvas.draw_circle([x,y], 50, 5, "White", "Red")
+
+#draw_handler2 makes a circle
+def draw_handler2(canvas):
+    global x
+    global y
+    global y2
+    
+    global x2
+    global y3
+    global y4
+    
+    global x3
+    global y5
+    global y6
+    
+    global radius
+    global radius2
+    global radius3
+    
+    global h
+    global k
+    
+    global counter
+    global counter2
+    global counter3
+    
+    global pi
+    global angle
+    global insideLine
+    global outsideLine
+    
+    global starRandX
+    
+    global starX
+    global starY
+    
+    global polyX
+    global polyY
+    
+    #Draw the Clock
+    canvas.draw_circle([300,300],radius,5,"White")
+    for c in range(1,13,1):
+        angle=(pi*c)/6
+        insideLine=((80*math.cos(angle)+300),(80*math.sin(angle)+300))
+        outsideLine=((90*math.cos(angle)+300),(90*math.sin(angle)+300))
+        canvas.draw_line(insideLine,outsideLine,5,"White")
+        
+    for d in range(0,13,3):
+        angle=(pi*d)/6
+        insideLine=((70*math.cos(angle)+300),(70*math.sin(angle)+300))
+        outsideLine=((90*math.cos(angle)+300),(90*math.sin(angle)+300))
+        canvas.draw_line(insideLine,outsideLine,5,"White")
+        
+    #Draw Polygons (For Requirement(I know I shouldn't be doing this, but the animation has gone on long enough))
+    for i in range(5):
+        canvas.draw_polygon([(polyX,polyY),(polyX+1,polyY),(polyX+1,polyY+1)],1,"Black","Black")
+        polyX=polyX+0
+        polyY=polyY+0
+    
+    #Minute Hand
+    x = x+6
+    if counter<=30:
+        counter=counter+1
+        if (x-k)**2 < radius**2:
+            y = math.sqrt(radius**2 - (x-k)**2)+h
+            y2 = -math.sqrt(radius**2 - (x-k)**2)+h
+            canvas.draw_line([300, 300],[600-x,y], 5, "White")
+        else:
+            x=300-radius
+    elif counter<59:
+        counter=counter+1
+        if (x-k)**2 < radius**2:
+            y = math.sqrt(radius**2 - (x-k)**2)+h
+            y2 = -math.sqrt(radius**2 - (x-k)**2)+h
+            canvas.draw_line([300, 300],[x,y2], 5, "White")
+        else:
+            x=300-radius
+    else:
+        counter=0
+    
+    #Hour Hand
+    x2 = x2+.12
+    if counter2<=1000:
+        counter2=counter2+1
+        if (x2-k)**2 < radius2**2:
+            y3 = math.sqrt(radius2**2 - (x2-k)**2)+h
+            y4 = -math.sqrt(radius2**2 - (x2-k)**2)+h
+            canvas.draw_line([300, 300],[600-x2,y3], 5, "White")
+        else:
+            x2=300-radius2
+    elif counter2<1999:
+        counter2=counter2+1
+        if (x2-k)**2 < radius2**2:
+            y3 = math.sqrt(radius2**2 - (x2-k)**2)+h
+            y4 = -math.sqrt(radius2**2 - (x2-k)**2)+h
+            canvas.draw_line([300, 300],[x2,y4], 5, "White")
+        else:
+            x2=300-radius2
+    else:
+        counter2=0
+   
+    #Sun and Moon Rotation
+    x3 = x3+.21
+    if counter3<=2000:
+        counter3=counter3+1
+        
+        #Draw Sun and Moon
+        if (x3-k)**2 < radius3**2:
+            y5 = math.sqrt(radius3**2 - (x3-k)**2)+h
+            y6 = -math.sqrt(radius3**2 - (x3-k)**2)+h
+            canvas.draw_circle([x3,y5],75,1,"#cccccc","#cccccc")
+            canvas.draw_circle([x3-25,y5-25],75,1,"Black","Black")
+            canvas.draw_circle([600-x3,y6],75,1,"Black","Orange")
+            canvas.draw_circle([600-x3,y6],70,1,"Orange","Yellow")
+        
+        else:
+            x3=300-radius3
+            starX=[]
+            starY=[]
+            
+    elif counter3<3999:
+        counter3=counter3+1
+        if (x3-k)**2 < radius3**2:
+            y5 = math.sqrt(radius3**2 - (x3-k)**2)+h
+            y6 = -math.sqrt(radius3**2 - (x3-k)**2)+h
+            canvas.draw_circle([600-x3,y6],75,1,"#cccccc","#cccccc")
+            canvas.draw_circle([575-x3,y6-25],75,1,"Black","Black")
+            canvas.draw_circle([x3,y5],75,1,"Black","Orange")
+            canvas.draw_circle([x3,y5],70,1,"Orange","Yellow")
+        else:
+            x3=300-radius3
+    else:
+        counter3=0
+        starX=[]
+        starY=[]
+    
+   
+frame = simplegui.create_frame('Testing', 600, 600)
+frame.set_canvas_background("Black")
+frame.set_draw_handler(draw_handler2)
+frame.start()
